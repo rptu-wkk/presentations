@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Git, GitLab, GitHub & DataHub</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+
+    <style>
+        :root {
+            --primary-color: #005f99;
+            --accent-color: #d00;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .reveal {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            font-size: 24px;
+            /* Optimized for browser view */
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            text-transform: none;
+            letter-spacing: -0.5px;
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+        }
+
+        .reveal h2 {
+            font-size: 1.8em;
+        }
+
+        .reveal h3 {
+            font-size: 1.3em;
+        }
+
+        .reveal h4 {
+            font-size: 1.1em;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .glass-card.alert {
+            background: rgba(240, 240, 255, 0.9);
+            /* Neutral/Blueish default */
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .glass-card.warn {
+            background: rgba(255, 240, 240, 0.9);
+            border-left: 4px solid var(--accent-color);
+            color: #800;
+        }
+
+        .glass-card.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        /* Modern Table */
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.9em;
+        }
+
+        .modern-table th,
+        .modern-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .modern-table th {
+            text-align: left;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .modern-table tr:hover {
+            background-color: rgba(0, 95, 153, 0.05);
+        }
+
+        /* Images */
+        .img-container {
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.6em;
+            color: #888;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .background-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            /* Placeholder: WKK Logo as full background example */
+            background: url('../wkk_logo.png') no-repeat center center fixed;
+            background-size: cover;
+            /* Opacity for watermark effect */
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-img"></div>
+    <div class="reveal">
+        <div class="footer">Git, GitLab, GitHub & DataHub // Lars Greipl</div>
+
+        <div class="slides">
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Git, GitLab, GitHub & DataHub</h1>
+                <h3>Wie wir unsere Daten und Software verwalten – einfach erklärt.</h3>
+                <hr style="border-color: rgba(0,0,0,0.1); width: 50%;">
+                <p style="margin-top: 50px; font-size: 1.2em;"></p>
+            </section>
+
+            <!-- Slide 2: Was ist Git? -->
+            <section>
+                <h2>Was ist Git? (Der Motor)</h2>
+                <div class="glass-card">
+                    <h4>Definition</h4>
+                    <ul>
+                        <li>Ein System zur Versionsverwaltung von Dateien.</li>
+                    </ul>
+                    <h4>Das Problem bisher</h4>
+                    <ul>
+                        <li><code>Datensatz_final_v2_echt_jetzt_fertig.txt</code></li>
+                    </ul>
+                    <h4>Die Git-Lösung</h4>
+                    <ul>
+                        <li>Speichert jede Änderung ("Savepoint").</li>
+                        <li>Man kann in der Zeit zurückreisen.</li>
+                        <li>Mehrere Leute arbeiten gleichzeitig an einer Datei, ohne sich zu überschreiben.</li>
+                        <li>Für uns: Wie ein lückenloses Logbuch oder eine Zeichnungsverwaltung im CAD.</li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Analogie:</strong><br>
+                    "Stellt euch Git vor wie eine Zeitmaschine für unsere Arbeit. Statt Dateien ständig unter neuem
+                    Namen zu speichern, merkt sich Git jede Änderung. Wir sehen wer, wann, was geändert hat und können
+                    jeden Fehler rückgängig machen."
+                </div>
+            </section>
+
+            <!-- Slide 3: Git vs. GitLab vs. GitHub -->
+            <section>
+                <h2>Git vs. GitLab vs. GitHub</h2>
+                <h3>(Die Werkstatt vs. Der Showroom)</h3>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Git:</strong> Das Werkzeug auf deinem Laptop (Lokal).</li>
+                        <li><strong>GitLab & GitHub:</strong> Die Online-Plattformen, wo der Code liegt (Server).</li>
+                    </ul>
+                    <h4>Der Unterschied</h4>
+                    <ul>
+                        <li><strong>GitLab:</strong> Unsere <strong>private Werkstatt</strong>. Sicher, intern, volle
+                            Kontrolle.</li>
+                        <li><strong>GitHub:</strong> Der <strong>öffentliche Marktplatz</strong>. Weltweiter Standard,
+                            riesige Community.</li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Analogie:</strong><br>
+                    "Git ist der Hammer in meiner Hand. GitLab und GitHub sind die Häuser, die wir damit bauen. GitLab
+                    ist unser abgesperrtes Firmengelände. GitHub ist die öffentliche Messehalle, wo wir unsere besten
+                    Stücke präsentieren."
+                </div>
+            </section>
+
+            <!-- Slide 4: Unser interner Standard: GitLab -->
+            <section>
+                <h2>Unser interner Standard: GitLab</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Einsatzgebiet:</strong> Internes Projektmanagement & Datenspeicher.</li>
+                    </ul>
+                    <h4>Nutzung 1: "Lab Repositories"</h4>
+                    <ul>
+                        <li>Speicherung von <strong>Anlagen-Konfigurationen</strong>.</li>
+                        <li>Jede Anlage hat ihr eigenes "Repository" (Ablageort).</li>
+                        <li>Änderungen an der Maschineneinstellung sind nachvollziehbar.</li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Analogie:</strong><br>
+                    "Wir nutzen GitLab als unser internes Archiv. Wenn wir eine Anlagenkonfiguration ändern, landet das
+                    hier. So wissen wir immer, wie die Maschine vor drei Wochen eingestellt war."
+                </div>
+            </section>
+
+            <!-- Slide 5: Unser Ziel: Ab nach GitHub! -->
+            <section>
+                <h2>Unser Ziel: Ab nach GitHub!</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Status Quo:</strong> Python-Code zur Datenanalyse liegt versteckt auf GitLab.</li>
+                        <li><strong>Das Problem:</strong> Niemand draußen sieht unsere Arbeit; keine "Strahlkraft".</li>
+                        <li><strong>Der Plan:</strong> Umzug des Python-Codes auf <strong>GitHub</strong>.</li>
+                    </ul>
+                    <h4>Die Vorteile</h4>
+                    <ul>
+                        <li>Sichtbarkeit in der Industrie (GitHub ist Standard).</li>
+                        <li>Community-Effekt: Andere können Verbesserungen vorschlagen.</li>
+                        <li>Wir zeigen Kompetenz nach außen.</li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Analogie:</strong><br>
+                    "Wir haben super Analyse-Tools in Python geschrieben. Aber die verstauben auf unserem internen
+                    Server. Wir wollen die auf GitHub veröffentlichen. Das ist quasi das 'Facebook für Entwickler'.
+                    Damit zeigen wir Flagge und erhöhen unsere technische Reichweite massiv."
+                </div>
+            </section>
+
+            <!-- Slide 6: Spezialfall: Der DataHub -->
+            <section>
+                <h2>Spezialfall: Der DataHub</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Was ist das?</strong> Unsere zentrale Sammelstelle für Messdaten.</li>
+                        <li><strong>Technische Basis:</strong> Basiert "unter der Haube" auf <strong>GitLab</strong>.
+                        </li>
+                    </ul>
+                    <h4>Funktion</h4>
+                    <ul>
+                        <li>Archivierung von Rohdaten aus dem Labor.</li>
+                        <li>Sichert die Original-Messwerte unveränderbar.</li>
+                        <li>Verbindet die Messung mit der Version der Auswertung.</li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Analogie:</strong><br>
+                    "Der DataHub ist unser Tresor für Messergebnisse. Technisch läuft das über GitLab, aber für uns ist
+                    es einfach der Ort, wo die Rohdaten sicher liegen und nicht mehr verloren gehen."
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'convex'
+        });
+    </script>
+</body>
+
+</html>

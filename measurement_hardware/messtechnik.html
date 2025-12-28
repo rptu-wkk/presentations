@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>Messtechnik am WKK: NI zu Beckhoff</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+
+    <style>
+        :root {
+            --primary-color: #005f99;
+            --accent-color: #d00;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .reveal {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            font-size: 24px;
+            /* Reduced from default (~40px) */
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+        }
+
+        .reveal h2 {
+            font-size: 1.8em;
+        }
+
+        .reveal h3 {
+            font-size: 1.3em;
+        }
+
+        .reveal h4 {
+            font-size: 1.1em;
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            text-transform: none;
+            letter-spacing: -0.5px;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .glass-card.alert {
+            background: rgba(255, 240, 240, 0.9);
+            border-left: 4px solid var(--accent-color);
+            color: #800;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.6em;
+            color: #888;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Footer Pain Points */
+        .footer-pain-points {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            z-index: 10;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            font-size: 0.7em;
+            /* Smaller footer */
+            pointer-events: none;
+        }
+
+        .pain-item {
+            color: #ccc;
+            /* Default inactive */
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .pain-item.active {
+            color: var(--accent-color);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .pain-item.resolved {
+            text-decoration: line-through;
+            color: #4caf50;
+            /* Green */
+            opacity: 0.6;
+        }
+
+        /* Images */
+        .img-container {
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            max-height: 300px;
+            /* Reduced height constraint */
+            object-fit: contain;
+        }
+
+        .logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 120px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .background-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            /* Placeholder: WKK Logo as full background example */
+            background: url('../wkk_logo.png') no-repeat center center fixed;
+            background-size: cover;
+            /* Opacity for watermark effect */
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-img"></div>
+    <div class="reveal">
+        <div class="footer">Messtechnik am WKK // Lars Greipl</div>
+
+        <!-- Persistent Footer -->
+        <div class="footer-pain-points">
+            <div class="pain-item" id="pain-price">💸 Preis</div>
+            <div class="pain-item" id="pain-time">⏳ Zeitaufwand</div>
+            <div class="pain-item" id="pain-inflex">🧱 Unflexibel</div>
+            <div class="pain-item" id="pain-fragile">⚡ Störanfällig</div>
+        </div>
+
+        <div class="slides">
+
+            <!-- Intro Slide -->
+            <section data-state="pain-none">
+                <h1>🚀 Messtechnik am WKK</h1>
+                <h3>Von der Karte zur Klemme</h3>
+                <hr style="border-color: rgba(0,0,0,0.1); width: 50%;">
+                <p style="margin-top: 50px; font-size: 1.2em;">Lars Greipl</p>
+            </section>
+
+            <!-- Slide 1: The NI Card (Context 2000) -->
+            <section data-state="pain-price">
+                <h2>1. Der Anfang (~2000)</h2>
+                <div style="display: flex; align-items: center; gap: 40px;">
+                    <div style="flex: 1;">
+                        <img src="ni-karte.png" class="img-container" alt="NI PCI Karte">
+                    </div>
+                    <div style="flex: 1; text-align: left;">
+                        <div class="glass-card">
+                            <h4>PC-Basierte Messtechnik</h4>
+                            <ul>
+                                <li>Damals "State of the Art"</li>
+                                <li>PCI-Einsteckkarten für Office-PCs</li>
+                                <li>Enorm leistungsfähig (High-Speed)</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card alert fragment">
+                            <strong>Das Problem:</strong>
+                            <p>Extrem teure Anschaffung pro Kanal.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 2: Signal Conditioning (Complexity) -->
+            <section data-state="pain-time">
+                <h2>2. Die Signalkonditionierung</h2>
+                <div class="r-stack">
+                    <div class="fragment fade-out" data-fragment-index="1">
+                        <div class="glass-card">
+                            <h4>Karte misst nur Spannung (V)</h4>
+                            <p>Industriesensoren liefern aber:</p>
+                            <ul>
+                                <li>4..20 mA (Druck)</li>
+                                <li>mV/V (Kraft)</li>
+                                <li>Widerstand (Temperatur Pt100)</li>
+                            </ul>
+                            <br>
+                            <strong>➡️ Wir brauchen externe Verstärker!</strong>
+                        </div>
+                    </div>
+
+                    <div class="fragment current-visible" data-fragment-index="1">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <img src="Messbox.jpg" class="img-container" style="height: 300px;">
+                                <p><small>Messbox</small></p>
+                            </div>
+                            <div>
+                                <img src="Messverstärker.jpg" class="img-container" style="height: 300px;">
+                                <p><small>Externe Verstärker</small></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="fragment" data-fragment-index="2">
+                        <h3>Die Folge:</h3>
+                        <img src="Kabelsalat.jpg" class="img-container" style="height: 400px;">
+                        <div class="glass-card alert" style="position: absolute; bottom: 0; right: 0;">
+                            <strong>Der Kabelsalat</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Central vs Decentral (Inflexibility) -->
+            <section data-state="pain-inflex">
+                <h2>3. Die Projektierung</h2>
+                <div class="glass-card alert" style="text-align: left; margin: 40px auto; max-width: 800px;">
+                    <h4>Das "Starre Korsett"</h4>
+                    <p>Man muss <strong>vorher</strong> exakt wissen, was man braucht.</p>
+                    <hr>
+                    <ul style="line-height: 2;">
+                        <li>Box wird in der E-Werkstatt gebaut & verdrahtet.</li>
+                        <li><strong>Danach ist Schluss:</strong> Hardware ist "eingefroren".</li>
+                        <li>Mal eben einen Sensor hinzufügen? ➡️ <strong>Unmöglich.</strong></li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 4: Industrial Robustness (Fragility) -->
+            <section data-state="pain-fragile">
+                <h2>4. Labor vs. Industrie</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div class="glass-card">
+                        <h4>Das Problem</h4>
+                        <p>Analoge Signale müssen quer durch die Halle.</p>
+                        <hr>
+                        <ul>
+                            <li>Lange Analogwege</li>
+                            <li>"Antennen" für EMV-Störungen</li>
+                            <li>Schwere Fehlersuche</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <img src="zentral-messsystem.png" class="img-container"
+                            style="width: 100%; height: 100%; object-fit: cover; opacity: 0.9;">
+                        <p style="font-size: 0.7em; text-align: center; color: #666; margin-top: 5px;"><i>Zentrale
+                                Messverteilung im Feld</i></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 5: The Concept (Solution Flexibility) -->
+            <section data-state="solve-flex">
+                <h2>5. Das Konzept: Industrietechnik</h2>
+                <div style="display: flex; align-items: center; gap: 40px;">
+                    <div style="flex: 1;">
+                        <img src="beckhoff-hw.png" class="img-container" alt="Beckhoff Hardware">
+                    </div>
+                    <div style="flex: 1; text-align: left;">
+                        <div class="glass-card" style="border-left: 5px solid var(--primary-color);">
+                            <h4>Der Ansatz</h4>
+                            <p>Wir nutzen <strong>Industrie-Steuerungstechnik</strong> (SPS) statt reiner
+                                Labormesstechnik.</p>
+                        </div>
+                        <div class="glass-card fragment">
+                            <h4>Der Gewinn</h4>
+                            <ul>
+                                <li><strong>Modularität:</strong> Klemmen einfach anreihen.</li>
+                                <li><strong>Robustheit:</strong> Gebaut für 24/7 Fabrikbetrieb.</li>
+                                <li><strong>Flexibilität:</strong> Jedes Signal, überall.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: EP Box (Solution Time) -->
+            <section data-state="solve-time">
+                <h2>6. Lösung: Die EP-Box</h2>
+                <div style="display: flex; align-items: center; gap: 40px;">
+                    <div style="flex: 1;">
+                        <img src="ep-box.png" class="img-container" alt="EP Box">
+                    </div>
+                    <div style="flex: 1; text-align: left;">
+                        <div class="glass-card" style="border-left: 5px solid #4caf50;">
+                            <h4>Alles in einer Box</h4>
+                            <p>Die EP-Serie integriert Signalkonditionierung & Digitalisierung direkt am Sensor.</p>
+                            <hr style="border-color: #eee;">
+                            <ul style="color: #444; margin-top: 10px;">
+                                <li>❌ Keine externen Messverstärker mehr</li>
+                                <li>❌ Keine Messbox notwendig</li>
+                                <li>✅ Direktanschluss M12</li>
+                            </ul>
+                        </div>
+                        <div class="glass-card fragment" style="background: #e8f5e9; border: 1px solid #c8e6c9;">
+                            <strong>Ergebnis:</strong> Der "Kabelsalat" und der Verdrahtungsaufwand sind eliminiert.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 7: Robustness (Solution Fragility) -->
+            <section data-state="solve-fragile">
+                <h2>7. Lösung: Signalintegrität</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <div class="glass-card">
+                        <h4>Eingangswiderstand</h4>
+                        <table class="modern-table">
+                            <tr>
+                                <td>NI</td>
+                                <td>> 1 MΩ</td>
+                            </tr>
+                            <tr style="font-weight: bold; color: var(--primary-color);">
+                                <td>Beckhoff</td>
+                                <td>~ 200 kΩ</td>
+                            </tr>
+                        </table>
+                        <p class="fragment" style="margin-top: 20px; font-size: 0.9em;">
+                            <strong>Nutzen:</strong> Geringerer Widerstand bedeutet mehr Stromfluss.
+                            <br>👉 <i>"Mehr Energie für den Informationstransport"</i> macht das Signal robuster gegen
+                            Einkopplungen.
+                        </p>
+                    </div>
+                    <div class="glass-card fragment">
+                        <h4>Filter & Diagnose</h4>
+                        <p>Hardware-Filter sind direkt auf der Klemme konfigurierbar.</p>
+                        <hr style="border-color: #eee;">
+                        <ul>
+                            <li>Exakt dokumentierte Filterkurven</li>
+                            <li>Keine "Blackbox"-Signalverarbeitung</li>
+                            <li>Diagnose direkt im EtherCAT-Protokoll</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 8: The Finale (Price) -->
+            <section data-state="solve-price">
+                <h2>8. Das Finale: Der Preis</h2>
+                <p style="font-style: italic; margin-bottom: 20px;">Szenario: Standard Messsystem (4x AI + 4x
+                    Thermoelement)</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                    <!-- Old System -->
+                    <div class="glass-card fade-in">
+                        <h4 style="color: #666;">Altes System (NI)</h4>
+                        <ul style="font-size: 0.8em; line-height: 1.6;">
+                            <li>Messkarte: 1000 €</li>
+                            <li>Gehäuse + Kleinkram: 500 €</li>
+                            <li>Messverstärker (4x): 600 €</li>
+                        </ul>
+                        <hr>
+                        <h3 style="color: #d00;">Summe: ~2100 €</h3>
+                    </div>
+
+                    <!-- New System -->
+                    <div class="glass-card fragment fade-in" style="border: 2px solid #4caf50;">
+                        <h4 style="color: #4caf50;">Neues System (Beckhoff)</h4>
+                        <ul style="font-size: 0.8em; line-height: 1.6;">
+                            <li>EP3174 (4x AI): 250 €</li>
+                            <li>EP3314 (4x TC): 250 €</li>
+                            <li>Kleinkram: 100 €</li>
+                        </ul>
+                        <hr>
+                        <div class="r-stack">
+                            <h3 class="fragment fade-out" data-fragment-index="1" style="color: #4caf50;">Summe: ~600 €
+                            </h3>
+                            <div class="fragment fade-in" data-fragment-index="1">
+                                <h3 style="text-decoration: line-through; color: #888; font-size: 0.8em;">~600 €</h3>
+                                <h2 style="color: #d00; transform: rotate(-5deg); margin-top: -10px;">~420 €</h2>
+                                <small style="color: #4caf50; font-weight: bold;">(inkl. 30% WKK-Rabatt)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Savings Calculation -->
+                <div class="fragment glass-card alert"
+                    style="text-align: center; margin-top: 20px; background: #e8f5e9; border-color: #4caf50; color: #2e7d32; box-shadow: 0 0 20px #4caf50;">
+                    <strong>Ersparnis: > 80%</strong>
+                </div>
+            </section>
+
+
+            <!-- Slide 9: Conclusion -->
+            <section data-state="conclusion">
+                <h2>Fazit & Ausblick</h2>
+                <div class="glass-card">
+                    <h4>Warum dieser Wechsel?</h4>
+                    <ul style="margin-top: 20px; line-height: 1.8;">
+                        <li class="fragment"><strong>Technisch:</strong> Von der starren PCI-Karte zur flexiblen
+                            Industriesteuerung.</li>
+                        <li class="fragment"><strong>Qualitativ:</strong> Höhere Signalintegrität & Robustheit im rauen
+                            Alltag.</li>
+                        <li class="fragment"><strong>Wirtschaftlich:</strong> Massive Kostensenkung (>80%) bei besserer
+                            Skalierbarkeit.</li>
+                    </ul>
+                </div>
+                <div class="fragment glass-card alert" style="text-align: center; margin-top: 30px;">
+                    <strong>Next Step:</strong> Rollout auf alle neuen Prüfstände.
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'convex'
+        });
+
+        // Loop to handle footer state active/inactive/resolved based on slide data-state
+        Reveal.on('slidechanged', event => {
+            // Reset all
+            document.querySelectorAll('.pain-item').forEach(el => {
+                el.classList.remove('active');
+                el.classList.remove('resolved');
+            });
+
+            // Logic to activate and resolve cumulative pains
+            let state = event.currentSlide.getAttribute('data-state');
+
+            // Helper to activate all
+            const allActive = () => {
+                ['pain-price', 'pain-time', 'pain-inflex', 'pain-fragile'].forEach(id =>
+                    document.getElementById(id).classList.add('active'));
+            };
+
+            if (state === 'pain-price') {
+                document.getElementById('pain-price').classList.add('active');
+            } else if (state === 'pain-time') {
+                document.getElementById('pain-price').classList.add('active');
+                document.getElementById('pain-time').classList.add('active');
+            } else if (state === 'pain-inflex') {
+                document.getElementById('pain-price').classList.add('active');
+                document.getElementById('pain-time').classList.add('active');
+                document.getElementById('pain-inflex').classList.add('active');
+            } else if (state === 'pain-fragile') {
+                allActive();
+            } else if (state === 'solve-flex') {
+                allActive();
+                document.getElementById('pain-inflex').classList.add('resolved');
+            } else if (state === 'solve-time') {
+                allActive();
+                document.getElementById('pain-inflex').classList.add('resolved');
+                document.getElementById('pain-time').classList.add('resolved');
+            } else if (state === 'solve-fragile') {
+                allActive();
+                document.getElementById('pain-inflex').classList.add('resolved');
+                document.getElementById('pain-time').classList.add('resolved');
+                document.getElementById('pain-fragile').classList.add('resolved');
+            } else if (state === 'solve-price' || state === 'conclusion') {
+                allActive();
+                // Helper to resolve all
+                ['pain-price', 'pain-time', 'pain-inflex', 'pain-fragile'].forEach(id =>
+                    document.getElementById(id).classList.add('resolved'));
+            }
+        });
+    </script>
+</body>
+
+</html>
