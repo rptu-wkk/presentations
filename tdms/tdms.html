@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WKK Präsentation - TDMS</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+
+    <style>
+        :root {
+            --primary-color: #005f99;
+            --accent-color: #d00;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .reveal {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            text-transform: none;
+            letter-spacing: -0.5px;
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+        }
+
+        .reveal h2 {
+            font-size: 1.8em;
+        }
+
+        .reveal h3 {
+            font-size: 1.3em;
+        }
+
+        .reveal h4 {
+            font-size: 1.1em;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .glass-card.alert {
+            background: rgba(240, 240, 255, 0.9);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .glass-card.warn {
+            background: rgba(255, 240, 240, 0.9);
+            border-left: 4px solid var(--accent-color);
+            color: #800;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.6em;
+            color: #888;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .background-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            background: url('../wkk_logo.png') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        ul {
+            display: block;
+            text-align: left;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-img"></div>
+    <div class="reveal">
+        <div class="footer">WKK Presentation // TDMS // Lars Greipl</div>
+
+        <div class="slides">
+
+            <!-- Slide 1: Title -->
+            <section>
+                <h1>Warum TDMS-Files?</h1>
+                <h3>Für die Datenspeicherung</h3>
+                <hr style="border-color: rgba(0,0,0,0.1); width: 50%;">
+            </section>
+
+            <!-- Slide 2: Old Way (ASCII) - Pros -->
+            <section>
+                <h2>Wie haben wir es früher gemacht? (ASCII)</h2>
+                <p>ASCII Files ohne besondere Endung - meistens .dat oder .dtv</p>
+                <div class="glass-card success">
+                    <h4>✅ Vorteile</h4>
+                    <ul>
+                        <li>Einfach zu öffnen (z.B. mit Excel, Notepad)</li>
+                        <li>Universell verständlich - Menschenlesbar</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 3: Old Way (ASCII) - Cons -->
+            <section>
+                <h2>Wie haben wir es früher gemacht? (ASCII)</h2>
+                <div class="glass-card warn">
+                    <h4>❌ Nachteile</h4>
+                    <ul>
+                        <li><strong>Performance:</strong><br>Text-Parsing ist langsam. Binärzahlen sind
+                            CPU-freundlicher.</li>
+                        <li><strong>Dateigröße:</strong><br>Ca. um Faktor 3 größer bei schlechterer Auflösung.</li>
+                        <li><strong>Fehlende Metadaten:</strong><br>Einheiten, Abtastrate etc. oft versteckt. Daten sind
+                            <strong>nicht selbstbeschreibend</strong>.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 4: Worst Case -->
+            <section>
+                <h2>💩 WORST CASE Szenario</h2>
+                <div class="glass-card warn">
+                    <p>Eine Datei ganz OHNE Spaltenbeschriftungen... sind das wirklich die richtigen Header??</p>
+                    <p><strong>Data Lost. Danke 2010er Lars!</strong></p>
+                </div>
+                <img src="screenshot-shityfile.png"
+                    style="max-height: 400px; border-radius: 8px; box-shadow: var(--shadow);">
+            </section>
+
+            <!-- Slide 5: Transition to TDMS -->
+            <section>
+                <h2>🚀 Wie kamen wir zu TDMS?</h2>
+                <div class="glass-card">
+                    <p>Bei den VHCF-Anlagen nutzen wir TDMS von Anfang an, um große Datenmengen zu bewältigen.</p>
+                    <p>Gute Erfahrungen + LabVIEW Support → Quasi-Standard ab ca. 2015.</p>
+                </div>
+            </section>
+
+            <!-- Slide 6: What is TDMS? -->
+            <section>
+                <h2>🧩 Was ist TDMS?</h2>
+                <p><strong>T</strong>echnical <strong>D</strong>ata <strong>M</strong>anagement
+                    <strong>S</strong>treaming</p>
+                <div class="glass-card">
+                    <h4>Hierarchische Struktur</h4>
+                    <ul>
+                        <li><strong>Root (Datei):</strong> Globale Kurzinformationen (Autor, Datum).</li>
+                        <li><strong>Groups (Gruppen):</strong> Logische Bündelung (z.B. "Motor 1").</li>
+                        <li><strong>Channels (Kanäle):</strong> Die eigentlichen Daten (z.B. "Spannung").</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 7: Advantages -->
+            <section>
+                <h2>✌️ Vorteile von TDMS</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Integrierte Metadaten:</strong><br>Einheiten & Skalierung direkt im Kanal.</li>
+                        <li><strong>Streaming-Optimierung:</strong><br>Perfekt für hohe Datenraten ("live" Schreiben).
+                        </li>
+                        <li><strong>Performance & Effizienz:</strong><br>Schnelles Binärformat, kleine Dateien.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 8: Risks -->
+            <section>
+                <h2>😱 Risiko?</h2>
+                <div class="glass-card alert">
+                    <h4>Ein proprietäres Format?</h4>
+                    <ul>
+                        <li>Ursprünglich stark an NI-Software gebunden.</li>
+                        <li>Vendor-Lock-in Gefahr?</li>
+                        <li>Was tun bei Softwarewechsel?</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 9: Solutions (Manual) -->
+            <section>
+                <h2>😎 Manuelle Weiterverarbeitung</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Excel:</strong> Import via NI Add-In möglich.</li>
+                        <li><strong>OriginLab:</strong> Importiert TDMS von "Haus aus".</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 10: Python Solution -->
+            <section>
+                <h2>🤓 Python Lösung</h2>
+                <div class="glass-card success">
+                    <h4>Open Source to the rescue!</h4>
+                    <ul>
+                        <li><strong>Spezifikation:</strong> ist öffentlich.</li>
+                        <li><strong>nptdms:</strong> Exzellente Python-Library.</li>
+                        <li><strong>Fazit:</strong> Daten sind frei! Analyse in Python/MATLAB problemlos.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Slide 11: Hands On -->
+            <section>
+                <h2>Hands on</h2>
+                <div class="glass-card">
+                    <p>Files öffnen in Excel und Origin</p>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'convex'
+        });
+    </script>
+</body>
+
+</html>
