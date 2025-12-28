@@ -1,0 +1,11 @@
+#========================
+# macOS specific files
+#========================
+.DS_Store
+.AppleDouble
+.LSOverride
+# Thumbnail cache files
+._*
+# Files that might appear in the root of a volume
+.Spotlight-V100
+.Trashes
