@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>pyMeSys Präsentation</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/white.min.css">
+
+    <style>
+        :root {
+            --primary-color: #005f99;
+            --accent-color: #d00;
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.18);
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .reveal {
+            font-family: 'Open Sans', sans-serif;
+            color: #333;
+            font-size: 24px;
+        }
+
+        .reveal h1,
+        .reveal h2,
+        .reveal h3,
+        .reveal h4 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--primary-color);
+            text-transform: none;
+            letter-spacing: -0.5px;
+        }
+
+        .reveal h1 {
+            font-size: 2.5em;
+        }
+
+        .reveal h2 {
+            font-size: 1.8em;
+        }
+
+        .reveal h3 {
+            font-size: 1.3em;
+        }
+
+        .reveal h4 {
+            font-size: 1.1em;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 12px;
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            padding: 15px;
+            margin: 15px 0;
+            text-align: left;
+        }
+
+        .glass-card.alert {
+            background: rgba(240, 240, 255, 0.9);
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .glass-card.warn {
+            background: rgba(255, 240, 240, 0.9);
+            border-left: 4px solid var(--accent-color);
+            color: #800;
+        }
+
+        .glass-card.success {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            color: #2e7d32;
+        }
+
+        /* Footer */
+        .footer {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            font-size: 0.6em;
+            color: #888;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .background-img {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            /* Adjust path usually ../../wkk_logo.png if in subdir */
+            background: url('../../wkk_logo.png') no-repeat center center fixed;
+            background-size: cover;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-img"></div>
+    <div class="reveal">
+        <div class="footer">WKK Presentations // pyMeSys</div>
+
+        <div class="slides">
+            <!-- Slide 1: Title -->
+            <section>
+                <h3>Messdatenerfassung am WKK</h3>
+                <h1>pyMeSys</h1>
+                <hr style="border-color: rgba(0,0,0,0.1); width: 50%;">
+                <p style="margin-top: 30px; font-size: 1.2em; font-weight: 600;">
+                    Die Zukunft der Messtechnik:<br>
+                    <span style="color: var(--primary-color);">Flexibel. Robust. Datengetrieben.</span>
+                </p>
+            </section>
+
+            <!-- Slide 2: Status Quo -->
+            <section>
+                <h2>Was ist das Ganze?</h2>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
+                    <div class="glass-card">
+                        <h4>Historisch gewachsen:</h4>
+                        <ul>
+                            <li>NiMeSys & BeMeSys (getrennte Welten)</li>
+                            <li>Viele LabVIEW Skripte</li>
+                            <li>Isolierte Daten ("Silos")</li>
+                        </ul>
+                    </div>
+                    <div class="glass-card success">
+                        <h4>Die Lösung: pyMeSys</h4>
+                        <p>Ein "Betriebssystem" für alle Prüfstände.</p>
+                        <hr style="border-color: rgba(0,0,0,0.1);">
+                        <p style="font-size: 0.9em;">
+                            Verbindet <strong>Beckhoff Hardware</strong> (Steuerung) mit <strong>Python</strong>
+                            (Intelligenz).
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 3: Benefits -->
+            <section>
+                <h2>Wofür brauchen wir das?</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li><strong>Einheitlichkeit:</strong> Bedienung ist am Zugprüfstand gleich wie am
+                            Ermüdungsstand.</li>
+                        <li><strong>Datenqualität:</strong> Automatische Speicherung in TDMS. Metadaten (Wer? Was? Wie?)
+                            sind direkt dabei.</li>
+                        <li><strong>Unabhängigkeit:</strong> Keine teuren Lizenzen, volle Kontrolle über unseren Code.
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-card alert fragment">
+                    <strong>Das Ziel:</strong> Weniger Zeit mit Softwareproblemen, mehr Zeit für Versuche.
+                </div>
+            </section>
+
+            <!-- Slide 4: Complexity vs Flexibility -->
+            <section>
+                <h2>"Warum so kompliziert?"</h2>
+                <p>Früher: Eine <code>.exe</code> pro Maschine. Schnell, aber starr.</p>
+                <p>Heute: Eine <strong>Konfiguration (YAML)</strong>.</p>
+
+                <div class="glass-card fragment">
+                    <h4>Die Config ist die Superkraft</h4>
+                    <p>Sie erlaubt es, einen Prüfstand morgens für Low-Cycle-Fatigue und nachmittags für Zugversuche zu
+                        nutzen – nur durch Laden einer Datei.</p>
+                </div>
+
+                <p style="font-size: 0.7em; margin-top: 30px; color: #666; font-style: italic;">
+                    Analogie: Ein Smartphone ist komplexer als ein Wählscheibentelefon, aber kann dafür Navi, Kamera und
+                    Telefon sein.
+                </p>
+            </section>
+
+            <!-- Slide 5: System Architecture -->
+            <section>
+                <h2>Ein Blick unter die Haube</h2>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 40px;">
+                    <div class="glass-card" style="width: 30%; text-align: center;">
+                        <h3 style="color: #2e7d32;">Python</h3>
+                        <p><strong>"Das Gehirn"</strong></p>
+                        <p style="font-size: 0.8em;">UI, Datenspeicherung, Logik</p>
+                    </div>
+                    <div style="font-size: 2em; color: #888;">↔</div>
+                    <div class="glass-card" style="width: 30%; text-align: center; border-left: 4px solid #d00;">
+                        <h3 style="color: #d00;">Beckhoff SPS</h3>
+                        <p><strong>"Der Muskel"</strong></p>
+                        <p style="font-size: 0.8em;">Echtzeit, Sicherheit, Hardware</p>
+                    </div>
+                    <div style="font-size: 2em; color: #888;">↔</div>
+                    <div class="glass-card" style="width: 30%; text-align: center;">
+                        <h3 style="color: #555;">Prüfstand</h3>
+                        <p><strong>"Die Realität"</strong></p>
+                        <p style="font-size: 0.8em;">Sensoren, Zylinder, Ofen</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slide 6: Conclusion -->
+            <section>
+                <h2>Zusammenfassung</h2>
+                <div class="glass-card">
+                    <ul>
+                        <li>pyMeSys macht Versuche <strong>vergleichbar</strong> und <strong>reproduzierbar</strong>.
+                        </li>
+                        <li>Die Konfiguration ermöglicht maximale <strong>Flexibilität</strong>.</li>
+                        <li>Wir sind bereit für <strong>KI und Big Data</strong>.</li>
+                    </ul>
+                </div>
+                <div style="margin-top: 50px;">
+                    <h1>Fragen?</h1>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            transition: 'convex'
+        });
+    </script>
+</body>
+
+</html>
